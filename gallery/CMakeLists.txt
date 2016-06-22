@@ -1,3 +1,7 @@
+if(ALT_CMAKE)
+  include(altCMakeLists.cmake)
+else()
+
 include(CetMake)
 
 set(gallery_sources
@@ -39,3 +43,5 @@ art_dictionary(DICTIONARY_LIBRARIES gallery)
 
 install_headers()
 install_source()
+
+endif()
