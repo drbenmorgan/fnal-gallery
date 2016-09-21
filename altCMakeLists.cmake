@@ -11,7 +11,11 @@
 
 # - Project setup
 cmake_minimum_required(VERSION 3.3)
-project(gallery VERSION 1.3.2)
+project(gallery VERSION 1.3.7)
+
+# CMAKE_MODULE_PATH not picked up from the environemnt?
+# Needed for FindROOT from ROOT
+list(INSERT CMAKE_MODULE_PATH 0 $ENV{CMAKE_MODULE_PATH})
 
 #-----------------------------------------------------------------------
 # Standard and Custom CMake Modules

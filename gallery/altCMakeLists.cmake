@@ -17,7 +17,6 @@ set(gallery_SOURCES
   EventNavigator.h
   FindMaker.cc
   FindMaker.h
-  Handle.cc
   Handle.h
   HistoryGetterBase.cc
   HistoryGetterBase.h
@@ -49,7 +48,7 @@ target_link_libraries(gallery
 
 # Must include dirs as art/build_dictionary don't understand genexs yet
 include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${cetlib_INCLUDEDIR})
+include_directories(${cetlib_INCLUDE_DIR})
 include_directories(${ROOT_INCLUDE_DIRS})
 art_dictionary(DICTIONARY_LIBRARIES gallery)
 
