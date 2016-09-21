@@ -13,7 +13,6 @@ set(gallery_sources
   EventHistoryGetter.cc
   EventNavigator.cc
   FindMaker.cc
-  Handle.cc
   HistoryGetterBase.cc
   throwFunctions.cc
   ValidHandle.cc
