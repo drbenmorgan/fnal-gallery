@@ -13,25 +13,23 @@ set(gallery_sources
   EventHistoryGetter.cc
   EventNavigator.cc
   FindMaker.cc
-  HistoryGetterBase.cc
   throwFunctions.cc
   ValidHandle.cc
 )
 
-set( gallery_libraries
-        canvas_Persistency_Common
-        canvas_Persistency_Provenance
-        canvas_Utilities
-        cetlib
-        ${ROOT_CORE}
-        ${ROOT_RIO}
-        ${ROOT_TREE}
-)
-
-cet_make(LIBRARIES canvas_Persistency_Common
-  canvas_Persistency_Provenance
-  canvas_Utilities
+set(gallery_libraries
+  canvas
   cetlib
+  cetlib_except
+  ${ROOT_CORE}
+  ${ROOT_RIO}
+  ${ROOT_TREE}
+  )
+
+cet_make(LIBRARIES
+  canvas
+  cetlib
+  cetlib_except
   ${ROOT_CORE}
   ${ROOT_RIO}
   ${ROOT_TREE}
@@ -39,6 +37,8 @@ cet_make(LIBRARIES canvas_Persistency_Common
 )
 
 art_dictionary(DICTIONARY_LIBRARIES gallery)
+
+add_subdirectory(test)
 
 install_headers()
 install_source()

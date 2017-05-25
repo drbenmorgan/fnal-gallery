@@ -66,10 +66,9 @@ namespace gallery {
   bool DataGetterHelper::streamersInitialized_ = false;
 
   DataGetterHelper::DataGetterHelper(EventNavigator const* eventNavigator,
-                                     std::shared_ptr<HistoryGetterBase> historyGetter) :
+                                     std::shared_ptr<EventHistoryGetter> historyGetter) :
     eventNavigator_(eventNavigator),
     tree_(nullptr),
-    edProductTClass_(TClass::GetClass("art::EDProduct")),
     historyGetter_(historyGetter),
     initializedForProcessHistory_(false),
     dictChecker_() {
@@ -77,7 +76,7 @@ namespace gallery {
     initializeStreamers();
   }
 
-  DataGetterHelper::~DataGetterHelper() {
+  DataGetterHelper::~DataGetterHelper() noexcept {
     for (auto label : labels_) {
       delete [] label;
     }
@@ -153,7 +152,7 @@ namespace gallery {
             std::string branchName = branchData.branchName();
             if (typeIDInDescription != typeIDInBranchData) {
               branchDataVector_[branchDataIndex].reset(new AssnsBranchData(typeIDInDescription, tClass, branch,
-                                                                           edProductTClass_, eventNavigator_, this,
+                                                                           eventNavigator_, this,
                                                                            std::move(branchName), info.type(), info.partnerType()));
             }
           }
@@ -299,10 +298,10 @@ namespace gallery {
     if (info.isAssns()) {
       TClass* tClass = getTClassUsingBranchDescription(processIndex, info);
       art::TypeID typeIDInDescription(tClass->GetTypeInfo());
-      branchDataVector_.emplace_back(new AssnsBranchData(typeIDInDescription, tClass, branch, edProductTClass_,
+      branchDataVector_.emplace_back(new AssnsBranchData(typeIDInDescription, tClass, branch,
                                                          eventNavigator_, this, std::move(branchName), info.type(), info.partnerType()));
     } else {
-      branchDataVector_.emplace_back(new BranchData(info.type(), info.tClass(), branch, edProductTClass_,
+      branchDataVector_.emplace_back(new BranchData(info.type(), info.tClass(), branch,
                                                     eventNavigator_, this, std::move(branchName)));
     }
     info.processIndexToBranchDataIndex().push_back(uupair(processIndex, branchDataIndex));
@@ -508,6 +507,7 @@ namespace gallery {
     label_(iLabel),
     instance_(iInstance),
     tClass_(TClass::GetClass(type_.typeInfo())),
+    isAssns_(art::is_assns(art::name_of_template_arg(type_.className(), 0))),
     partnerType_(getPartnerTypeID(tClass_))
   {
   }
