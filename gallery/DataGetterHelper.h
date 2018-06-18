@@ -38,11 +38,11 @@
 
 #include "canvas/Persistency/Common/EDProductGetterFinder.h"
 #include "canvas/Persistency/Provenance/Compatibility/BranchIDList.h"
-#include "canvas/Persistency/Provenance/DictionaryChecker.h"
 #include "canvas/Persistency/Provenance/ProcessHistoryID.h"
 #include "canvas/Persistency/Provenance/ProductID.h"
 #include "canvas/Utilities/InputTag.h"
 #include "canvas/Utilities/TypeID.h"
+#include "canvas_root_io/Utilities/DictionaryChecker.h"
 
 #include <map>
 #include <memory>
@@ -57,7 +57,7 @@ namespace art {
   class EDProductGetter;
   class BranchDescription;
   class ProductID;
-}
+} // namespace art
 
 class TClass;
 class TFile;
@@ -69,7 +69,6 @@ namespace gallery {
 
   class DataGetterHelper : art::EDProductGetterFinder {
   public:
-
     DataGetterHelper(EventNavigator const* eventNavigator,
                      std::shared_ptr<EventHistoryGetter> historyGetter);
 
@@ -82,7 +81,6 @@ namespace gallery {
     void updateEvent();
 
   private:
-
     using uupair = std::pair<unsigned int, unsigned int>;
 
     EventNavigator const* eventNavigator_;
@@ -109,29 +107,61 @@ namespace gallery {
     // in a call to getByLabel, getValidHandle, or a similar function.
     class InfoForTypeLabelInstance {
     public:
-
       InfoForTypeLabelInstance(art::TypeID const& iType,
                                std::string const& iLabel,
                                std::string const& iInstance);
 
-      art::TypeID const& type() const { return type_; }
-      std::string const& label() const { return label_; }
-      std::string const& instance() const { return instance_; }
+      art::TypeID const&
+      type() const
+      {
+        return type_;
+      }
+      std::string const&
+      label() const
+      {
+        return label_;
+      }
+      std::string const&
+      instance() const
+      {
+        return instance_;
+      }
 
-      TClass* tClass() const { return tClass_; }
-      bool isAssns() const { return isAssns_; }
-      art::TypeID const& partnerType() const { return partnerType_; }
+      TClass*
+      tClass() const
+      {
+        return tClass_;
+      }
+      bool
+      isAssns() const
+      {
+        return isAssns_;
+      }
+      art::TypeID const&
+      partnerType() const
+      {
+        return partnerType_;
+      }
 
-      std::vector<std::pair<unsigned int, unsigned int>>& processIndexToBranchDataIndex() const
-      { return processIndexToBranchDataIndex_; }
+      std::vector<std::pair<unsigned int, unsigned int>>&
+      processIndexToBranchDataIndex() const
+      {
+        return processIndexToBranchDataIndex_;
+      }
 
-      std::vector<unsigned int>& branchDataIndexOrderedByHistory() const
-      { return branchDataIndexOrderedByHistory_; }
+      std::vector<unsigned int>&
+      branchDataIndexOrderedByHistory() const
+      {
+        return branchDataIndexOrderedByHistory_;
+      }
 
-      std::vector<art::ProductID>& productIDs() const { return productIDs_; }
+      std::vector<art::ProductID>&
+      productIDs() const
+      {
+        return productIDs_;
+      }
 
     private:
-
       art::TypeID const type_;
       std::string const label_;
       std::string const instance_;
@@ -198,7 +228,7 @@ namespace gallery {
     // Keeps track of information related to metadata.
     BranchMapReader branchMapReader_{};
 
-    mutable art::DictionaryChecker dictChecker_{};
+    mutable art::root::DictionaryChecker dictChecker_{};
 
     static bool streamersInitialized_;
 
@@ -216,12 +246,13 @@ namespace gallery {
                        unsigned int processIndex,
                        InfoForTypeLabelInstance const& info,
                        bool initializeTheCache = false) const;
-    TClass* getTClassUsingBranchDescription(unsigned int processIndex,
-                                          InfoForTypeLabelInstance const& info) const;
-    InfoForTypeLabelInstance&
-    getInfoForTypeLabelInstance(art::TypeID const& type,
-                                std::string const& label,
-                                std::string const& instance) const;
+    TClass* getTClassUsingBranchDescription(
+      unsigned int processIndex,
+      InfoForTypeLabelInstance const& info) const;
+    InfoForTypeLabelInstance& getInfoForTypeLabelInstance(
+      art::TypeID const& type,
+      std::string const& label,
+      std::string const& instance) const;
     void addTypeLabelInstance(art::TypeID const& type,
                               std::string const& label,
                               std::string const& instance) const;
@@ -232,16 +263,20 @@ namespace gallery {
     void readBranchData(unsigned int branchDataIndex,
                         art::EDProduct const*& edProduct,
                         art::TypeID const& type) const;
-    bool getBranchDataIndex(std::vector<std::pair<unsigned int, unsigned int>> const& processIndexToBranchDataIndex,
-                            unsigned int processIndex,
-                            unsigned int & branchDataIndex) const;
-    void updateBranchDataIndexOrderedByHistory(InfoForTypeLabelInstance const& info) const;
+    bool getBranchDataIndex(
+      std::vector<std::pair<unsigned int, unsigned int>> const&
+        processIndexToBranchDataIndex,
+      unsigned int processIndex,
+      unsigned int& branchDataIndex) const;
+    void updateBranchDataIndexOrderedByHistory(
+      InfoForTypeLabelInstance const& info) const;
     bool getByBranchDescription(art::BranchDescription const&,
-                                unsigned int & branchDataIndex) const;
+                                unsigned int& branchDataIndex) const;
 
-    art::EDProductGetter const* getEDProductGetterImpl(art::ProductID) const override;
+    art::EDProductGetter const* getEDProductGetterImpl(
+      art::ProductID) const override;
   };
-}
+} // namespace gallery
 #endif /* gallery_DataGetterHelper_h */
 
 // Local Variables:

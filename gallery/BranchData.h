@@ -16,7 +16,7 @@ namespace art {
   class EDProduct;
   class EDProductGetterFinder;
   class TypeID;
-}
+} // namespace art
 
 namespace gallery {
 
@@ -24,7 +24,6 @@ namespace gallery {
 
   class BranchData : public art::EDProductGetter {
   public:
-
     // This is an invalid BranchData object initialized
     // such that getIt always returns a nullptr.
     BranchData() = default;
@@ -43,23 +42,46 @@ namespace gallery {
 
     virtual void updateFile(TBranch* iBranch);
 
-    TClass* tClass() const { return tClass_; }
-    void* address() const { return address_; }
-    TBranch* branch() const { return branch_; }
-    std::string const& branchName() const { return branchName_; }
-    long long lastProduct() const { return lastProduct_; }
+    TClass*
+    tClass() const
+    {
+      return tClass_;
+    }
+    void*
+    address() const
+    {
+      return address_;
+    }
+    TBranch*
+    branch() const
+    {
+      return branch_;
+    }
+    std::string const&
+    branchName() const
+    {
+      return branchName_;
+    }
+    long long
+    lastProduct() const
+    {
+      return lastProduct_;
+    }
 
-    bool isReady() const override { return true; }
-    art::EDProduct const *getIt() const override;
+    bool
+    isReady() const override
+    {
+      return true;
+    }
+    art::EDProduct const* getIt() const override;
 
-    art::EDProduct const *anyProduct() const override;
-    art::EDProduct const *uniqueProduct() const override;
-    art::EDProduct const *uniqueProduct(art::TypeID const&) const override;
+    art::EDProduct const* anyProduct() const override;
+    art::EDProduct const* uniqueProduct() const override;
+    art::EDProduct const* uniqueProduct(art::TypeID const&) const override;
     bool resolveProduct(art::TypeID const&) const override;
     bool resolveProductIfAvailable(art::TypeID const&) const override;
 
   private:
-
     TClass* tClass_{nullptr};
     void* address_{nullptr};
     art::EDProduct const* edProduct_{nullptr};
@@ -69,7 +91,7 @@ namespace gallery {
     mutable long long lastProduct_{-1};
     std::string branchName_{};
   };
-}
+} // namespace gallery
 #endif /* gallery_BranchData_h */
 
 // Local Variables:
