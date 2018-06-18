@@ -1,7 +1,8 @@
 # Use new CMake system
 if(ALT_CMAKE)
   include(altCMakeLists.cmake)
-else()
+  return()
+endif()
 
 # ======================================================================
 #  gallery main build file
@@ -67,4 +68,3 @@ add_subdirectory(ups)
 # packaging utility
 include(UseCPack)
 
-endif()

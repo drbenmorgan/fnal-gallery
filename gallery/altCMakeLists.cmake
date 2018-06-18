@@ -1,4 +1,3 @@
-include(ArtDictionary)
 
 add_library(gallery SHARED
   AssnsBranchData.cc
@@ -34,6 +33,7 @@ target_include_directories(gallery
 
  target_link_libraries(gallery
   PUBLIC
+    canvas_root_io::canvas_root_io
     canvas::canvas
     cetlib::cetlib
     ${ROOT_Core_LIBRARY}
@@ -45,32 +45,33 @@ install(TARGETS gallery
   EXPORT ${PROJECT_NAME}Targets
   DESTINATION ${CMAKE_INSTALL_LIBDIR}
   )
-
-install(FILES
-  AssnsBranchData.h
-  BranchData.h
-  BranchMapReader.h
-  DataGetterHelper.h
-  Event.h
-  EventHistoryGetter.h
-  EventNavigator.h
-  FindMaker.h
-  Handle.h
-  TypeLabelInstanceKey.h
-  ValidHandle.h
-  throwFunctions.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
+  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
+  FILES_MATCHING PATTERN "*.h"
+  PATTERN "test" EXCLUDE
   )
+
 
 # Must include dirs as art/build_dictionary don't understand genexs yet
 include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${cetlib_INCLUDE_DIR})
-include_directories(${ROOT_INCLUDE_DIRS})
-include_directories(${Boost_INCLUDE_DIRS})
-art_dictionary(DICTIONARY_LIBRARIES gallery)
+art_dictionary(DICTIONARY_LIBRARIES gallery DICT_NAME_VAR _dictlib)
+# Use get_property to avoid nested genex expansion issue
+get_target_property(_rootmap_file ${_dictlib}_dict ROOTMAP_FILE)
+get_target_property(_pcm_file ${_dictlib}_dict PCM_FILE)
+install(TARGETS ${_dictlib}_dict
+  EXPORT ${PROJECT_NAME}Targets
+  DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(FILES ${_rootmap_file} ${_pcm_file}
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  )
 
 
 if(BUILD_TESTING)
+  # Create interface
+  set(ROOT_CORE "${ROOT_Core_LIBRARY}")
+  include_directories(${ROOT_INCLUDE_DIRS})
+  include_directories($<TARGET_PROPERTY:canvas::canvas,INTERFACE_INCLUDE_DIRECTORIES>)
+
   add_subdirectory(test)
 endif()
 

@@ -1,6 +1,7 @@
 if(ALT_CMAKE)
   include(altCMakeLists.cmake)
-else()
+  return()
+endif()
 
 include(CetMake)
 
@@ -40,4 +41,3 @@ add_subdirectory(test)
 install_headers()
 install_source()
 
-endif()

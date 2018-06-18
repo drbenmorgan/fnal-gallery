@@ -20,9 +20,10 @@ set_and_check(gallery_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 # - Only define direct dependencies for now. Assume that
 # - deps of deps are resolved downstream.
 # - Assert EXACT version as this is default behaviour of UPS setups.
+find_package(canvas_root_io @canvas_root_io_VERSION@ EXACT REQUIRED)
 find_package(canvas @canvas_VERSION@ EXACT REQUIRED)
-find_package(ROOT @ROOT_VERSION@ EXACT REQUIRED)
 find_package(cetlib @cetlib_VERSION@ EXACT REQUIRED)
+find_package(ROOT @ROOT_VERSION@ EXACT REQUIRED)
 
 # - Include our targets
 include("${CMAKE_CURRENT_LIST_DIR}/galleryTargets.cmake")

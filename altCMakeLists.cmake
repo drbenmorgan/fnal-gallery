@@ -11,30 +11,22 @@
 
 # - Project setup
 cmake_minimum_required(VERSION 3.3)
-project(gallery VERSION 1.4.2)
+project(gallery VERSION 1.8.2)
 
 #-----------------------------------------------------------------------
 # Standard and Custom CMake Modules
 #
 # - Cetbuildtools, version2
-find_package(cetbuildtools2 0.1.0 REQUIRED)
+find_package(cetbuildtools2 0.5.0 REQUIRED)
 list(INSERT CMAKE_MODULE_PATH 0 ${cetbuildtools2_MODULE_PATH})
+set(CET_COMPILER_CXX_STANDARD_MINIMUM 14)
 include(CetInstallDirs)
 include(CetCMakeSettings)
 include(CetCompilerSettings)
-include(CetTest)
 
-# C++ Standard Config
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(canvas_COMPILE_FEATURES
-  cxx_auto_type
-  cxx_generic_lambdas
-  )
-
-# these are minimum required versions, not the actual product versions
-find_package(canvas REQUIRED)
+# Find direct dependencies
+find_package(canvas_root_io REQUIRED)
+find_package(canvas)
 find_package(cetlib REQUIRED)
 find_package(ROOT 6 REQUIRED)
 
